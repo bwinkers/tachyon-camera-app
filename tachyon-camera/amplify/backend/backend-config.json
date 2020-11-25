@@ -1,6 +1,6 @@
 {
   "auth": {
-    "tachyoncameraapp8c165a6c": {
+    "tachyoncamera470b88cb": {
       "service": "Cognito",
       "providerPlugin": "awscloudformation",
       "dependsOn": [],
