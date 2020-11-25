@@ -1,4 +1,4 @@
-# tachyon-camera-uploader
+# tachyon-camera-app
 An Amplify app to take pictures and upload the to S3 for processing.
 
 ## How this was built
@@ -6,13 +6,13 @@ An Amplify app to take pictures and upload the to S3 for processing.
 ### Create the React app
 
 ```bash
-npx create-react-app tachyon-camera-uploader
+npx create-react-app tachyon-camera-app
 ```
 
 You will see:
 
 ```bash
-Success! Created tachyon-camera-uploader at /home/brian/sandbox/tachyon-camera-uploader/tachyon-camera-uploader
+Success! Created tachyon-camera-app at /home/brian/sandbox/tachyon-camera-app/tachyon-camera-app
 Inside that directory, you can run several commands:
 
   npm start
@@ -30,7 +30,7 @@ Inside that directory, you can run several commands:
 
 We suggest that you begin by typing:
 
-  cd tachyon-camera-uploader
+  cd tachyon-camera-app
   npm start
 ```
 
@@ -39,7 +39,7 @@ We suggest that you begin by typing:
 Follow the advice offered and:
 
 ```bash
-cd tachyon-camera-uploader
+cd tachyon-camera-app
 npm start
 ```
 
@@ -86,8 +86,30 @@ At the start of the BODY
     <div id="root"></div>
 ```
 
-## Cleanup App markup
+## Amplify your efforts
 
-Edit `src/App.js`
+Let AWS do the undifferentiated heavy lifting, Amplify is amazing for that.
+
+### Initailize Amplify
+
+Choose defaults unless you know what you are doing.
+
+```bash
+amplify init
+```
+
+### Add Authentication
+
+Getting auth correct yourself is easy, installing Amplify auth is easy.
+Choose the `Default Configuration` for now, its easy to rerun Amplify later to update to add facebook or other Social auth.
 
 
+```bash
+amplify add auth
+```
+
+### Publish your chnages out to AWS
+
+```bash
+amplify publish
+```
