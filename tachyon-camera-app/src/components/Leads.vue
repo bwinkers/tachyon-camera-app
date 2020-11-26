@@ -5,6 +5,7 @@
     
     <FormulateForm
     class="login-form"
+    name="create-album"
     @submit="submitHandler"
     v-model="formValues">
 
@@ -37,6 +38,10 @@
   
     </FormulateForm>
     
+    <div v-for="album in albums" :key="album.id">
+      <h3>{{ album.name }}</h3>
+      <p>{{ album.description }}</p>
+    </div>
     
     </div>
 </div>
@@ -47,13 +52,22 @@ import {
     Auth
 } from 'aws-amplify'
 
-
+import { API, graphqlOperation } from 'aws-amplify'
+import { createAlbum } from '@/graphql/mutations'
+import { listAlbums } from '@/graphql/queries'
+import { onCreateAlbum } from '@/graphql/subscriptions';
 
 export default {
     name: 'Leads',
+    async created() {
+        this.getAlbums();
+        this.subscribe();
+    },
     data() {
         return {
-            user: {}
+            user: {},
+            formValues: {},
+            albums: {}
         }
     },
     beforeCreate() {
@@ -64,9 +78,40 @@ export default {
             .catch(() => console.log('not signed in...'))
     },
     methods: {
-        submitHandler (data) {
-        alert(`Thank you, ${data.name}`)
-        }
+        async submitHandler (data) {
+            alert(`Thank you, ${data.name}`)
+
+            await API.graphql({
+                query: createAlbum,
+                variables: {input: data},
+            });
+            this.$formulate.reset('create-album')
+
+        },
+        async getAlbums() {
+            const albums = await API.graphql({
+                query: listAlbums
+            });
+            console.log(albums)
+            this.albums = albums.data.listAlbums.items;
+        },
+        async subscribe() {
+        const owner = await Auth.currentAuthenticatedUser()
+        API.graphql(
+            graphqlOperation(onCreateAlbum,
+                {
+                owner: owner.username
+                }
+            )
+        )
+            .subscribe({
+            next: (eventData) => {
+                let album = eventData.value.data.onCreateAlbum;
+                if (this.albums.some(item => item.name === album.name)) return; // remove duplications
+                this.albums = [...this.albums, album];
+            }
+        });
+    }
     }
 }
 </script>
