@@ -1,0 +1,10 @@
+{
+  "auth": {
+    "tachyoncameraapp544abd89": {
+      "service": "Cognito",
+      "providerPlugin": "awscloudformation",
+      "dependsOn": [],
+      "customAuth": false
+    }
+  }
+}
