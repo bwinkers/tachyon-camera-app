@@ -11,6 +11,10 @@ import router from '@/router'
 
 Amplify.configure(aws_exports);
 
+import VueFormulate from '@braid/vue-formulate'
+
+Vue.use(VueFormulate)
+
 Vue.config.productionTip = false
 
 
