@@ -1,0 +1,11 @@
+{
+    "AppSyncApiName": "tachyoncameraapp",
+    "DynamoDBBillingMode": "PAY_PER_REQUEST",
+    "DynamoDBEnableServerSideEncryption": false,
+    "AuthCognitoUserPoolId": {
+        "Fn::GetAtt": [
+            "authtachyoncameraapp544abd89",
+            "Outputs.UserPoolId"
+        ]
+    }
+}
