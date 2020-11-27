@@ -13,7 +13,7 @@
       name="name"
       type="text"
       label="Album name"
-      placeholder="Short name to remember the album by"
+      placeholder="A short name to remember the album by"
       validation="required"
     />
     <FormulateInput

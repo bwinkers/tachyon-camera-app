@@ -5,15 +5,15 @@
     
     <FormulateForm
     class="login-form"
-    name="create-album"
-    @submit="submitHandler"
+    name="edit-album"
+    @submit="editAlbumHandler"
     v-model="formValues">
 
     <FormulateInput
       name="name"
       type="text"
       label="Album name"
-      placeholder="short name to remember the album by"
+      placeholder="A short name to remember the album by"
       validation="required"
     />
     <FormulateInput
@@ -45,23 +45,21 @@
 import {
     Auth
 } from 'aws-amplify'
-
-import { API, graphqlOperation } from 'aws-amplify'
-import { createAlbum } from '@/graphql/mutations'
-import { listAlbums } from '@/graphql/queries'
-import { onCreateAlbum } from '@/graphql/subscriptions';
+import { API } from 'aws-amplify'
+import { updateAlbum } from '@/graphql/mutations'
+import { getAlbum } from '@/graphql/queries'
 
 export default {
     name: 'Album',
     async created() {
-        this.getAlbums();
-        this.subscribe();
+        console.log(this.$route.params.id)
+        this.getAlbum(this.$route.params.id)
     },
     data() {
         return {
             user: {},
             formValues: {},
-            albums: {}
+            album: {}
         }
     },
     beforeCreate() {
@@ -72,40 +70,21 @@ export default {
             .catch(() => console.log('not signed in...'))
     },
     methods: {
-        async submitHandler (data) {
-            alert(`Thank you, ${data.name}`)
-
+        async getAlbum(albumId) {
+            const album = await API.graphql({
+                query: getAlbum,
+                variables: { id: albumId },
+            });
+            console.log(album)
+        },
+        async editAlbumHandler (data) {
             await API.graphql({
-                query: createAlbum,
+                query: updateAlbum,
                 variables: {input: data},
             });
-            this.$formulate.reset('create-album')
+            this.$formulate.reset('edit-album')
 
-        },
-        async getAlbums() {
-            const albums = await API.graphql({
-                query: listAlbums
-            });
-            console.log(albums)
-            this.albums = albums.data.listAlbums.items;
-        },
-        async subscribe() {
-        const owner = await Auth.currentAuthenticatedUser()
-        API.graphql(
-            graphqlOperation(onCreateAlbum,
-                {
-                owner: owner.username
-                }
-            )
-        )
-            .subscribe({
-            next: (eventData) => {
-                let album = eventData.value.data.onCreateAlbum;
-                if (this.albums.some(item => item.name === album.name)) return; // remove duplications
-                this.albums = [...this.albums, album];
-            }
-        });
-    }
+        }
     }
 }
 </script>
