@@ -38,8 +38,11 @@
   
     </FormulateForm>
 
-    <amplify-s3-image-picker />
-    <s3-image picker/>
+<amplify-s3-image-picker />
+
+
+
+   
 
     </div>
 </div>
@@ -50,8 +53,10 @@ import { API, Auth } from 'aws-amplify'
 import { updateAlbum } from '@/graphql/mutations'
 import { getAlbum } from '@/graphql/queries'
 
+
 export default {
     name: 'Album',
+
     async created() {
         console.log(this.$route.params.id)
         this.getAlbum(this.$route.params.id)
