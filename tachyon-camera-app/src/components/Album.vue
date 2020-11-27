@@ -1,7 +1,7 @@
 <template>
 <div class="container">
     <h1>Album for {{user.username}}</h1>
-    <div id="leads">
+    <div id="album">
     
     <FormulateForm
     class="login-form"
@@ -75,14 +75,20 @@ export default {
                 query: getAlbum,
                 variables: { id: albumId },
             });
-            console.log(album)
+            console.log(album.data.getAlbum)
+            this.formValues = album.data.getAlbum
         },
         async editAlbumHandler (data) {
+            const sparse = {}
+            sparse.name = data.name
+            sparse.description = data.description
+            sparse.location = data.location
+            sparse.id = data.id
             await API.graphql({
                 query: updateAlbum,
-                variables: {input: data},
+                variables: {input: sparse},
             });
-            this.$formulate.reset('edit-album')
+            //this.$formulate.reset('edit-album')
 
         }
     }
