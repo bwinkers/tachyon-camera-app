@@ -9,11 +9,13 @@
     "start": "vue-cli-service serve --open"
   },
   "dependencies": {
+    "@aws-amplify/storage": "^3.3.13",
     "@aws-amplify/ui-vue": "^0.2.29",
     "@braid/vue-formulate": "^2.4.5",
     "aws-amplify": "^3.3.10",
     "core-js": "^3.6.5",
     "mdbvue": "6.7.1",
+    "uuidv4": "^6.2.5",
     "vue": "^2.6.11",
     "vue-router": "^3.4.9",
     "vue-web-cam": "^1.9.0",

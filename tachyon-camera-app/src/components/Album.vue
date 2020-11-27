@@ -38,16 +38,15 @@
   
     </FormulateForm>
 
-    
+    <amplify-s3-image-picker />
+    <s3-image picker/>
+
     </div>
 </div>
 </template>
 
 <script>
-import {
-    Auth
-} from 'aws-amplify'
-import { API } from 'aws-amplify'
+import { API, Auth } from 'aws-amplify'
 import { updateAlbum } from '@/graphql/mutations'
 import { getAlbum } from '@/graphql/queries'
 
