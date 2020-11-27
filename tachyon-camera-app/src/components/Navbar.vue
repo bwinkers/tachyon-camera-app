@@ -6,7 +6,7 @@
                 <router-link :to="{ name: 'Home' }">Home</router-link>
             </mdb-nav-item>
             <mdb-nav-item>
-                <router-link :to="{ name: 'Leads' }">Leads</router-link>
+                <router-link :to="{ name: 'Albums' }">Albums</router-link>
             </mdb-nav-item>
             <mdb-nav-item>
                 <router-link :to="{ name: 'Camera' }">Camera</router-link>

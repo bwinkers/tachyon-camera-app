@@ -4,7 +4,8 @@ Vue.use(Router);
 import { Auth } from 'aws-amplify'
 
 import Home from '@/components/Home.vue'
-import Leads from '@/components/Leads.vue'
+import Album from '@/components/Album.vue'
+import Albums from '@/components/Albums.vue'
 import Camera from '@/components/Camera.vue'
 import Support from '@/components/Support.vue'
 import Profile from '@/components/Profile.vue'
@@ -23,9 +24,15 @@ const routes = [
     component: AuthComponent 
   },
   {
-    path: '/leads',
-    name: 'Leads',
-    component: Leads,
+    path: '/albums',
+    name: 'Albums',
+    component: Albums,
+    meta: { requiresAuth: true} 
+  },
+  {
+    path: '/albums/:id',
+    name: 'Album',
+    component: Album,
     meta: { requiresAuth: true} 
   },
   {

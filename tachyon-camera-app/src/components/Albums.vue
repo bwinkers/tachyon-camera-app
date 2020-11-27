@@ -1,6 +1,6 @@
 <template>
 <div class="container">
-    <h1>Leads for {{user.username}}</h1>
+    <h1>Albums for {{user.username}}</h1>
     <div id="leads">
     
     <FormulateForm
@@ -12,8 +12,8 @@
     <FormulateInput
       name="name"
       type="text"
-      label="Report name"
-      placeholder="short name to remember the sign by"
+      label="Album name"
+      placeholder="Short name to remember the album by"
       validation="required"
     />
     <FormulateInput
@@ -28,18 +28,18 @@
     name="description"
     type="text"
     label="Description"
-    placeholder="Description of the issue"
+    placeholder="Description of the album"
     />
     
     <FormulateInput
       type="submit"
-      label="Submit Report"
+      label="Create Album"
     />
   
     </FormulateForm>
     
     <div v-for="album in albums" :key="album.id">
-      <h3>{{ album.name }}</h3>
+      <h3><router-link :to="{ name: 'Album' ,  params: { id: album.id }}">{{ album.name }}</router-link></h3>
       <p>{{ album.description }}</p>
     </div>
     
@@ -58,7 +58,7 @@ import { listAlbums } from '@/graphql/queries'
 import { onCreateAlbum } from '@/graphql/subscriptions';
 
 export default {
-    name: 'Leads',
+    name: 'Albums',
     async created() {
         this.getAlbums();
         this.subscribe();
@@ -79,8 +79,6 @@ export default {
     },
     methods: {
         async submitHandler (data) {
-            alert(`Thank you, ${data.name}`)
-
             await API.graphql({
                 query: createAlbum,
                 variables: {input: data},
