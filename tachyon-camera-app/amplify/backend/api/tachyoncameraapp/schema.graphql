@@ -1,6 +1,6 @@
 type Album 
 @model 
-@auth(rules: [{allow: owner}]) {
+@auth(rules: [{allow: owner},{allow: private, provider: iam}]) {
     id: ID!
     name: String!
     description: String
@@ -11,7 +11,7 @@ type Album
 type Photo 
 @model 
 @key(name: "byAlbum", fields: ["albumId"], queryField: "listPhotosByAlbum")
-@auth(rules: [{allow: owner}]) {
+@auth(rules: [{allow: owner},{allow: private, provider: iam}]) {
     id: ID!
     albumId: ID!
     album: Album @connection(fields: ["albumId"])
@@ -21,6 +21,21 @@ type Photo
 }
 
 type PhotoS3Info {
+    key: String!
+    width: Int!
+    height: Int!
+}
+
+input CreatePhotoInput {
+    id: ID
+    owner: String
+    albumId: ID!
+    bucket: String!
+    fullsize: PhotoS3InfoInput!
+    thumbnail: PhotoS3InfoInput!
+}
+
+input PhotoS3InfoInput {
     key: String!
     width: Int!
     height: Int!

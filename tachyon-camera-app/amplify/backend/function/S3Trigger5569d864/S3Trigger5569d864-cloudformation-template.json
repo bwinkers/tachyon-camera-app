@@ -4,6 +4,14 @@
   "Parameters": {
     "env": {
       "Type": "String"
+    },
+    "apitachyoncameraappGraphQLAPIIdOutput": {
+      "Type": "String",
+      "Default": "apitachyoncameraappGraphQLAPIIdOutput"
+    },
+    "apitachyoncameraappGraphQLAPIEndpointOutput": {
+      "Type": "String",
+      "Default": "apitachyoncameraappGraphQLAPIEndpointOutput"
     }
   },
   "Conditions": {
@@ -47,6 +55,15 @@
           "Variables": {
             "ENV": {
               "Ref": "env"
+            },
+            "REGION": {
+              "Ref": "AWS::Region"
+            },
+            "API_TACHYONCAMERAAPP_GRAPHQLAPIIDOUTPUT": {
+              "Ref": "apitachyoncameraappGraphQLAPIIdOutput"
+            },
+            "API_TACHYONCAMERAAPP_GRAPHQLAPIENDPOINTOUTPUT": {
+              "Ref": "apitachyoncameraappGraphQLAPIEndpointOutput"
             }
           }
         },
@@ -60,7 +77,7 @@
         "Timeout": "25",
         "Code": {
           "S3Bucket": "amplify-tachyoncameraapp-dev-143543-deployment",
-          "S3Key": "amplify-builds/S3Trigger5569d864-53336753796a7847324b-build.zip"
+          "S3Key": "amplify-builds/S3Trigger5569d864-4d4f426e78693168532f-build.zip"
         }
       }
     },
@@ -141,6 +158,59 @@
                   }
                 ]
               }
+            }
+          ]
+        }
+      }
+    },
+    "AmplifyResourcesPolicy": {
+      "DependsOn": [
+        "LambdaExecutionRole"
+      ],
+      "Type": "AWS::IAM::Policy",
+      "Properties": {
+        "PolicyName": "amplify-lambda-execution-policy",
+        "Roles": [
+          {
+            "Ref": "LambdaExecutionRole"
+          }
+        ],
+        "PolicyDocument": {
+          "Version": "2012-10-17",
+          "Statement": [
+            {
+              "Effect": "Allow",
+              "Action": [
+                "appsync:Create*",
+                "appsync:StartSchemaCreation",
+                "appsync:GraphQL",
+                "appsync:Get*",
+                "appsync:List*",
+                "appsync:Update*",
+                "appsync:Delete*"
+              ],
+              "Resource": [
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:aws:appsync:",
+                      {
+                        "Ref": "AWS::Region"
+                      },
+                      ":",
+                      {
+                        "Ref": "AWS::AccountId"
+                      },
+                      ":apis/",
+                      {
+                        "Ref": "apitachyoncameraappGraphQLAPIIdOutput"
+                      },
+                      "/*"
+                    ]
+                  ]
+                }
+              ]
             }
           ]
         }

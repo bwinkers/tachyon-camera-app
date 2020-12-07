@@ -1,0 +1,12 @@
+{
+  "permissions": {
+    "api": {
+      "tachyoncameraapp": [
+        "create",
+        "read",
+        "update",
+        "delete"
+      ]
+    }
+  }
+}
