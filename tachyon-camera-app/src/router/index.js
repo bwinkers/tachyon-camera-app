@@ -36,6 +36,12 @@ const routes = [
     meta: { requiresAuth: true} 
   },
   {
+    path: '/albums/:id/camera',
+    name: 'AlbumCamera',
+    component: Camera,
+    meta: { requiresAuth: true} 
+  },
+  {
     path: '/camera',
     name: 'Camera',
     component: Camera,

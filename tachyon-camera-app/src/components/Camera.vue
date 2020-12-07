@@ -1,27 +1,18 @@
 <template>
 <div class="container">
-    <h1>Camera for {{user.username}}</h1>
-    <div>
-    <mdb-btn color="primary" @click.native="modal = true">Launch demo modal</mdb-btn>
-    </div>
     <mdb-modal :show="modal" @close="modal = false" fullHeight  position="top" >
-      <mdb-modal-header>
-        <mdb-modal-title>Modal title</mdb-modal-title>
-      </mdb-modal-header>
       <mdb-modal-body>
       <figure class="figure">
                     <img :src="img" class="img-fluid" />
                 </figure>
       </mdb-modal-body>
       <mdb-modal-footer>
-        <mdb-btn color="secondary" @click.native="modal = false">Close</mdb-btn>
-        <mdb-btn color="primary">Save changes</mdb-btn>
+        <mdb-btn color="secondary" @click.native="modal = false">Delete</mdb-btn>
+        <mdb-btn color="primary"  @click="onSave">Upload</mdb-btn>
       </mdb-modal-footer>
     </mdb-modal>
-   <div class="row">
-            <div class="col-md-6">
-                <h2>Current Camera</h2>
-                <code v-if="device">{{ device.label }}</code>
+   <div>
+            <div>
                 <div class="border">
                     <vue-web-cam
                         ref="webcam"
@@ -36,8 +27,8 @@
                     />
                 </div>
 
-                <div class="row">
-                    <div class="col-md-12">
+                <div >
+                    <div>
                         <select v-model="camera">
                             <option>-- Select Device --</option>
                             <option
@@ -51,13 +42,9 @@
                     <div class="custom-control custom-switch">
                         <input type="checkbox" class="custom-control-input" id="cameraToggle" checked="true" @change="onToggle" >
                         <label class="custom-control-label" for="cameraToggle">ON</label>   
-                        <button type="button" class="btn btn-primary" @click="onCapture" rounded>Capture Photo</button>
+                        <button type="button" class="btn btn-primary" @click="onCapture">Capture Photo</button>
                     </div>
                 </div>
-            </div>
-            <div class="col-md-6">
-                <h2>Captured Image</h2>
-                
             </div>
         </div>
 </div>
@@ -74,8 +61,6 @@ import { v4 as uuidv4 } from 'uuid';
 
 import {
     mdbModal,
-    mdbModalHeader,
-    mdbModalTitle,
     mdbModalBody,
     mdbModalFooter,
     mdbBtn
@@ -91,11 +76,14 @@ export default {
             })
             .catch(() => console.log('not signed in...'))
     },
+    async created() {
+        console.log(this.$route.params.id)
+        const albumId = this.$route.params.id
+        this.albumId = albumId
+    },
     components: {
         'vue-web-cam': WebCam,
         mdbModal,
-        mdbModalHeader,
-        mdbModalTitle,
         mdbModalBody,
         mdbModalFooter,
         mdbBtn
@@ -168,18 +156,31 @@ export default {
             console.log(this.cameraOn)
             this.cameraOn === true ?  this.onStop() : this.onStart()
         },
-        async uploadToS3 (file, progress, error, option) {
-            //const user = await Auth.currentAuthenticatedUser();
-            console.log('made it' + file + progress + error + option)
+        async onSave() {
+            this.uploadToS3 (this.img)
+            this.modal = false
+        },
+        async uploadToS3 (file) {
+            const user = await Auth.currentAuthenticatedUser();
             const uid = await uuidv4()
-            console.log(uid)
             const image = await this.dataURItoBlob(file)
-            const fileName = 'uploads/' + uid + '.jpeg'
+            const fileName = 'uploads/' + uid + '.jpg'
 
-            await Storage.put(fileName, image, {
+            console.log(user)
+
+            const metadata = {
+                    albumId: this.albumId,
+                    ownerId: user.attributes.sub,
+                    owner: user.username
+                }
+
+            console.log(metadata)
+
+            await Storage.vault.put(fileName, image, {
                 progressCallback(progress) {
-                    console.log(`Uploaded: ${progress.loaded}/${progress.total}`);
+                    console.log(`Uploading: ${progress.loaded}/${progress.total}`);
                 },
+                metadata: metadata
             })
             .then (result => console.log(result))
             .catch(err => console.log(err));

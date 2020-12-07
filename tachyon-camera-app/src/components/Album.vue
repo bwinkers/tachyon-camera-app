@@ -1,6 +1,5 @@
 <template>
 <div class="container">
-    <h1>Album for {{user.username}}</h1>
     <div id="album">
     
     <FormulateForm
@@ -47,6 +46,10 @@
         :uploader="uploadToS3"
     />
     </div>
+    <div>
+    <router-link :to="{ name: 'AlbumCamera', params: { id: this.$route.params.id } }">Camera</router-link>
+    <button type="button" class="btn btn-primary" >Camera</button>
+    </div>
 </div>
 </template>
 
@@ -74,7 +77,9 @@ export default {
 
     async created() {
         console.log(this.$route.params.id)
-        this.getAlbum(this.$route.params.id)
+        const albumId = this.$route.params.id
+        this.albumId = albumId
+        this.getAlbum(albumId)
     },
     data() {
         return {
@@ -113,34 +118,26 @@ export default {
             //this.$formulate.reset('edit-album')
 
         },
-        async uploadFile(file) {
-            const fileName = 'upload/'+uuidv4()
-            const user = await Auth.currentAuthenticatedUser();
-
-            const result = await Storage.vault.put(
-            fileName, 
-            file, 
-            {
-                metadata: {
-                albumid: this.albumId,
-                owner: user.username,
-                }
-            })
-
-             console.log('Uploaded file: ', result);
-        },
         async uploadToS3 (file, progress, error, option) {
-            //const user = await Auth.currentAuthenticatedUser();
+            const user = await Auth.currentAuthenticatedUser();
+            console.log(user)
             console.log('made it' + file + progress + error + option)
             const uid = await uuidv4()
             console.log(uid)
 
+            const metadata = {
+                    albumId: this.albumId,
+                    owner: user.username,
+                    ownerId: user.id,
+                }
+
+            console.log(metadata)
+
             const fileName = 'uploads/' + uid 
 
-            await Storage.put(fileName, file, {
-                progressCallback(progress) {
-                    console.log(`Uploaded: ${progress.loaded}/${progress.total}`);
-                },
+            await Storage.vault.put(fileName, file, {
+
+                metadata: metadata
             })
             .then (result => console.log(result))
             .catch(err => console.log(err));
