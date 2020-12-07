@@ -2,12 +2,15 @@
 // this is an auto generated file. This will be overwritten
 
 export const onCreateAlbum = /* GraphQL */ `
-  subscription OnCreateAlbum($owner: String!) {
+  subscription OnCreateAlbum($owner: String) {
     onCreateAlbum(owner: $owner) {
       id
       name
       description
       location
+      createdAt
+      updatedAt
+      owner
       photos {
         items {
           id
@@ -19,19 +22,19 @@ export const onCreateAlbum = /* GraphQL */ `
         }
         nextToken
       }
-      createdAt
-      updatedAt
-      owner
     }
   }
 `;
 export const onUpdateAlbum = /* GraphQL */ `
-  subscription OnUpdateAlbum($owner: String!) {
+  subscription OnUpdateAlbum($owner: String) {
     onUpdateAlbum(owner: $owner) {
       id
       name
       description
       location
+      createdAt
+      updatedAt
+      owner
       photos {
         items {
           id
@@ -43,19 +46,19 @@ export const onUpdateAlbum = /* GraphQL */ `
         }
         nextToken
       }
-      createdAt
-      updatedAt
-      owner
     }
   }
 `;
 export const onDeleteAlbum = /* GraphQL */ `
-  subscription OnDeleteAlbum($owner: String!) {
+  subscription OnDeleteAlbum($owner: String) {
     onDeleteAlbum(owner: $owner) {
       id
       name
       description
       location
+      createdAt
+      updatedAt
+      owner
       photos {
         items {
           id
@@ -67,29 +70,14 @@ export const onDeleteAlbum = /* GraphQL */ `
         }
         nextToken
       }
-      createdAt
-      updatedAt
-      owner
     }
   }
 `;
 export const onCreatePhoto = /* GraphQL */ `
-  subscription OnCreatePhoto($owner: String!) {
+  subscription OnCreatePhoto($owner: String) {
     onCreatePhoto(owner: $owner) {
       id
       albumId
-      album {
-        id
-        name
-        description
-        location
-        photos {
-          nextToken
-        }
-        createdAt
-        updatedAt
-        owner
-      }
       bucket
       fullsize {
         key
@@ -103,27 +91,27 @@ export const onCreatePhoto = /* GraphQL */ `
       }
       createdAt
       updatedAt
+      album {
+        id
+        name
+        description
+        location
+        createdAt
+        updatedAt
+        owner
+        photos {
+          nextToken
+        }
+      }
       owner
     }
   }
 `;
 export const onUpdatePhoto = /* GraphQL */ `
-  subscription OnUpdatePhoto($owner: String!) {
+  subscription OnUpdatePhoto($owner: String) {
     onUpdatePhoto(owner: $owner) {
       id
       albumId
-      album {
-        id
-        name
-        description
-        location
-        photos {
-          nextToken
-        }
-        createdAt
-        updatedAt
-        owner
-      }
       bucket
       fullsize {
         key
@@ -137,27 +125,27 @@ export const onUpdatePhoto = /* GraphQL */ `
       }
       createdAt
       updatedAt
+      album {
+        id
+        name
+        description
+        location
+        createdAt
+        updatedAt
+        owner
+        photos {
+          nextToken
+        }
+      }
       owner
     }
   }
 `;
 export const onDeletePhoto = /* GraphQL */ `
-  subscription OnDeletePhoto($owner: String!) {
+  subscription OnDeletePhoto($owner: String) {
     onDeletePhoto(owner: $owner) {
       id
       albumId
-      album {
-        id
-        name
-        description
-        location
-        photos {
-          nextToken
-        }
-        createdAt
-        updatedAt
-        owner
-      }
       bucket
       fullsize {
         key
@@ -171,6 +159,18 @@ export const onDeletePhoto = /* GraphQL */ `
       }
       createdAt
       updatedAt
+      album {
+        id
+        name
+        description
+        location
+        createdAt
+        updatedAt
+        owner
+        photos {
+          nextToken
+        }
+      }
       owner
     }
   }
