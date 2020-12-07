@@ -19,7 +19,11 @@
               "userPoolId": "authtachyoncameraapp544abd89"
             }
           },
-          "additionalAuthenticationProviders": []
+          "additionalAuthenticationProviders": [
+            {
+              "authenticationType": "AWS_IAM"
+            }
+          ]
         }
       }
     }
