@@ -46,19 +46,6 @@
         validation="mime:image/jpeg,image/png,image/gif"
         :uploader="uploadToS3"
     />
-
-<amplify-s3-image-picker button-text="Choose "
-                    header-title="CMS File Uploader"
-                    title="Photo Upload"
-                    path="uploads/"
-                    track=true
-                    identity-id="brian"
-                     />
-
- <amplify-photo-picker v-bind:photoPickerConfig="photoPickerConfig"></amplify-photo-picker>
-
-<amplify-s3-album path="uploads/"></amplify-s3-album>
-
     </div>
 </div>
 </template>

@@ -1,6 +1,23 @@
 <template>
 <div class="container">
     <h1>Camera for {{user.username}}</h1>
+    <div>
+    <mdb-btn color="primary" @click.native="modal = true">Launch demo modal</mdb-btn>
+    </div>
+    <mdb-modal :show="modal" @close="modal = false" fullHeight  position="top" >
+      <mdb-modal-header>
+        <mdb-modal-title>Modal title</mdb-modal-title>
+      </mdb-modal-header>
+      <mdb-modal-body>
+      <figure class="figure">
+                    <img :src="img" class="img-fluid" />
+                </figure>
+      </mdb-modal-body>
+      <mdb-modal-footer>
+        <mdb-btn color="secondary" @click.native="modal = false">Close</mdb-btn>
+        <mdb-btn color="primary">Save changes</mdb-btn>
+      </mdb-modal-footer>
+    </mdb-modal>
    <div class="row">
             <div class="col-md-6">
                 <h2>Current Camera</h2>
@@ -10,6 +27,7 @@
                         ref="webcam"
                         :device-id="deviceId"
                         width="100%"
+                        autoplay="autoplay"
                         @started="onStarted"
                         @stopped="onStopped"
                         @error="onError"
@@ -29,18 +47,17 @@
                             >{{ device.label }}</option>
                         </select>
                     </div>
-                    <div class="col-md-12">
-                        <button type="button" class="btn btn-primary" @click="onCapture">Capture Photo</button>
-                        <button type="button" class="btn btn-danger" @click="onStop">Stop Camera</button>
-                        <button type="button" class="btn btn-success" @click="onStart">Start Camera</button>
+                    <!-- Default switch -->
+                    <div class="custom-control custom-switch">
+                        <input type="checkbox" class="custom-control-input" id="cameraToggle" checked="true" @change="onToggle" >
+                        <label class="custom-control-label" for="cameraToggle">ON</label>   
+                        <button type="button" class="btn btn-primary" @click="onCapture" rounded>Capture Photo</button>
                     </div>
                 </div>
             </div>
             <div class="col-md-6">
                 <h2>Captured Image</h2>
-                <figure class="figure">
-                    <img :src="img" class="img-responsive" />
-                </figure>
+                
             </div>
         </div>
 </div>
@@ -55,6 +72,15 @@ import { WebCam } from "vue-web-cam";
 
 import { v4 as uuidv4 } from 'uuid';
 
+import {
+    mdbModal,
+    mdbModalHeader,
+    mdbModalTitle,
+    mdbModalBody,
+    mdbModalFooter,
+    mdbBtn
+
+} from 'mdbvue';
 
 export default {
     name: 'Camera',
@@ -66,7 +92,13 @@ export default {
             .catch(() => console.log('not signed in...'))
     },
     components: {
-        'vue-web-cam': WebCam
+        'vue-web-cam': WebCam,
+        mdbModal,
+        mdbModalHeader,
+        mdbModalTitle,
+        mdbModalBody,
+        mdbModalFooter,
+        mdbBtn
     },
     data() {
         return {
@@ -74,7 +106,10 @@ export default {
             camera: null,
             deviceId: null,
             devices: [],
-            user: {}
+            user: {},
+            cameraOn: true,
+            autoplay: false,
+            modal: false
         };
     },
     computed: {
@@ -99,8 +134,9 @@ export default {
     methods: {
         onCapture() {
             this.img = this.$refs.webcam.capture();
-            console.log(this.img)
-            this.uploadToS3 (this.img)
+            this.modal = true
+            //console.log(this.img)
+            //this.uploadToS3 (this.img)
         },
         onStarted(stream) {
             console.log("On Started Event", stream);
@@ -109,22 +145,28 @@ export default {
             console.log("On Stopped Event", stream);
         },
         onStop() {
-            this.$refs.webcam.stop();
+            this.cameraOn = false
+            this.$refs.webcam.stop()
         },
         onStart() {
-            this.$refs.webcam.start();
+            this.cameraOn = true
+            this.$refs.webcam.start()
         },
         onError(error) {
-            console.log("On Error Event", error);
+            console.log("On Error Event", error)
         },
         onCameras(cameras) {
             this.devices = cameras;
-            console.log("On Cameras Event", cameras);
+            console.log("On Cameras Event", cameras)
         },
         onCameraChange(deviceId) {
             this.deviceId = deviceId;
             this.camera = deviceId;
-            console.log("On Camera Change Event", deviceId);
+            console.log("On Camera Change Event", deviceId)
+        },
+        onToggle() {
+            console.log(this.cameraOn)
+            this.cameraOn === true ?  this.onStop() : this.onStart()
         },
         async uploadToS3 (file, progress, error, option) {
             //const user = await Auth.currentAuthenticatedUser();
@@ -149,7 +191,7 @@ export default {
                 byteString = atob(dataURI.split(',')[1]);
             else
                 byteString = unescape(dataURI.split(',')[1]);
-
+ 
             // separate out the mime component
             var mimeString = dataURI.split(',')[0].split(':')[1].split(';')[0];
 
