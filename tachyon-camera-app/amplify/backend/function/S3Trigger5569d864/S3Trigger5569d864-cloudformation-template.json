@@ -12,6 +12,10 @@
     "apitachyoncameraappGraphQLAPIEndpointOutput": {
       "Type": "String",
       "Default": "apitachyoncameraappGraphQLAPIEndpointOutput"
+    },
+    "storageAlbumsBucketBucketName": {
+      "Type": "String",
+      "Default": "storageAlbumsBucketBucketName"
     }
   },
   "Conditions": {
@@ -64,6 +68,61 @@
             },
             "API_TACHYONCAMERAAPP_GRAPHQLAPIENDPOINTOUTPUT": {
               "Ref": "apitachyoncameraappGraphQLAPIEndpointOutput"
+            },
+            "STORAGE_ALBUMSBUCKET_BUCKETNAME": {
+              "Ref": "storageAlbumsBucketBucketName"
+            },
+            "API_TACHYONCAMERAAPP_ALBUMTABLE_NAME": {
+              "Fn::ImportValue": {
+                "Fn::Sub": "${apitachyoncameraappGraphQLAPIIdOutput}:GetAtt:AlbumTable:Name"
+              }
+            },
+            "API_TACHYONCAMERAAPP_ALBUMTABLE_ARN": {
+              "Fn::Join": [
+                "",
+                [
+                  "arn:aws:dynamodb:",
+                  {
+                    "Ref": "AWS::Region"
+                  },
+                  ":",
+                  {
+                    "Ref": "AWS::AccountId"
+                  },
+                  ":table/",
+                  {
+                    "Fn::ImportValue": {
+                      "Fn::Sub": "${apitachyoncameraappGraphQLAPIIdOutput}:GetAtt:AlbumTable:Name"
+                    }
+                  }
+                ]
+              ]
+            },
+            "API_TACHYONCAMERAAPP_PHOTOTABLE_NAME": {
+              "Fn::ImportValue": {
+                "Fn::Sub": "${apitachyoncameraappGraphQLAPIIdOutput}:GetAtt:PhotoTable:Name"
+              }
+            },
+            "API_TACHYONCAMERAAPP_PHOTOTABLE_ARN": {
+              "Fn::Join": [
+                "",
+                [
+                  "arn:aws:dynamodb:",
+                  {
+                    "Ref": "AWS::Region"
+                  },
+                  ":",
+                  {
+                    "Ref": "AWS::AccountId"
+                  },
+                  ":table/",
+                  {
+                    "Fn::ImportValue": {
+                      "Fn::Sub": "${apitachyoncameraappGraphQLAPIIdOutput}:GetAtt:PhotoTable:Name"
+                    }
+                  }
+                ]
+              ]
             }
           }
         },

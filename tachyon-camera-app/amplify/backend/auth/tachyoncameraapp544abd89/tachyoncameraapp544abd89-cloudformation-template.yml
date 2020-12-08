@@ -117,7 +117,6 @@ Parameters:
   userPoolGroupList:
     Type: CommaDelimitedList
       
-            
   serviceName:
     Type: String
   
@@ -269,7 +268,7 @@ Resources:
             - ' }'
             - '};'
       Handler: index.handler
-      Runtime: nodejs12.x
+      Runtime: nodejs10.x
       Timeout: '300'
       Role: !GetAtt 
         - UserPoolClientRole

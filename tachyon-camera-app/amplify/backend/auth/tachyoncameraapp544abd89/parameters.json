@@ -1,6 +1,6 @@
 {
     "identityPoolName": "tachyoncameraapp544abd89_identitypool_544abd89",
-    "allowUnauthenticatedIdentities": false,
+    "allowUnauthenticatedIdentities": true,
     "resourceNameTruncated": "tachyo544abd89",
     "userPoolName": "tachyoncameraapp544abd89_userpool_544abd89",
     "autoVerifiedAttributes": [
