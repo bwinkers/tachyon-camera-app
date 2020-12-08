@@ -8,5 +8,6 @@
         "delete"
       ]
     }
-  }
+  },
+  "lambdaLayers": []
 }

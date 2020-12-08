@@ -73,12 +73,13 @@
             "Arn"
           ]
         },
-        "Runtime": "nodejs10.x",
+        "Runtime": "nodejs12.x",
         "Timeout": "25",
         "Code": {
           "S3Bucket": "amplify-tachyoncameraapp-dev-143543-deployment",
           "S3Key": "amplify-builds/S3Trigger5569d864-2f33514d66446b577758-build.zip"
-        }
+        },
+        "Layers": []
       }
     },
     "LambdaExecutionRole": {
