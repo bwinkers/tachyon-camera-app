@@ -11,7 +11,7 @@ const AWS = require('aws-sdk');
 const S3 = new AWS.S3({ signatureVersion: 'v4' });
 const AUTH_TYPE = require('aws-appsync').AUTH_TYPE;
 const AWSAppSyncClient = require('aws-appsync').default;
-const uid = require('ulid');
+const ulid = require('ulid');
 const gql = require('graphql-tag');
 
 const Sharp = require('sharp');
@@ -128,14 +128,17 @@ async function processRecord(record) {
   if (record.eventName !== "ObjectCreated:Put") { console.log('Is not a new file'); return; }
   if (! key.includes('uploads/')) { console.log('Does not look like an upload from user'); return; }
 
+
   const originalPhoto = await S3.getObject({ Bucket: bucketName, Key: key }).promise()
-  
+  console.log(originalPhoto)
+
+    
 	const metadata = originalPhoto.Metadata
   console.log('metadata', JSON.stringify(metadata))
   console.log('resize')
 	const sizes = await resize(originalPhoto.Body, bucketName, key);    
   console.log('sizes', JSON.stringify(sizes))
-	const id = uid();
+	const id = await ulid.ulid();
 	const item = {
 		id: id,
 		owner: metadata.owner,
