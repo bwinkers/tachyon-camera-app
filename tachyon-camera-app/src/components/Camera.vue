@@ -52,12 +52,14 @@
 
 <script>
 import Amplify, { Auth, Storage } from 'aws-amplify'
-import awsconfig from '@/aws-exports';
-Amplify.configure(awsconfig);
+import awsconfig from '@/aws-exports'
+Amplify.configure(awsconfig)
 
-import { WebCam } from "vue-web-cam";
+import { WebCam } from "vue-web-cam"
 
-import { v4 as uuidv4 } from 'uuid';
+//import { v4 as uuidv4 } from 'uuid'
+
+import { ulid } from 'ulid'
 
 import {
     mdbModal,
@@ -121,16 +123,16 @@ export default {
     },
     methods: {
         onCapture() {
-            this.img = this.$refs.webcam.capture();
+            this.img = this.$refs.webcam.capture()
             this.modal = true
             //console.log(this.img)
             //this.uploadToS3 (this.img)
         },
         onStarted(stream) {
-            console.log("On Started Event", stream);
+            console.log("On Started Event", stream)
         },
         onStopped(stream) {
-            console.log("On Stopped Event", stream);
+            console.log("On Stopped Event", stream)
         },
         onStop() {
             this.cameraOn = false
@@ -161,8 +163,8 @@ export default {
             this.modal = false
         },
         async uploadToS3 (file) {
-            const user = await Auth.currentAuthenticatedUser();
-            const uid = await uuidv4()
+            const user = await Auth.currentAuthenticatedUser()
+            const uid = await ulid()
             const image = await this.dataURItoBlob(file)
             const fileName = 'uploads/' + uid + '.jpg'
 
@@ -178,12 +180,12 @@ export default {
 
             await Storage.vault.put(fileName, image, {
                 progressCallback(progress) {
-                    console.log(`Uploading: ${progress.loaded}/${progress.total}`);
+                    console.log(`Uploading: ${progress.loaded}/${progress.total}`)
                 },
                 metadata: metadata
             })
             .then (result => console.log(result))
-            .catch(err => console.log(err));
+            .catch(err => console.log(err))
         },
         async dataURItoBlob(dataURI) {
             // convert base64/URLEncoded data component to raw binary data held in a string
@@ -194,15 +196,15 @@ export default {
                 byteString = unescape(dataURI.split(',')[1]);
  
             // separate out the mime component
-            var mimeString = dataURI.split(',')[0].split(':')[1].split(';')[0];
+            var mimeString = dataURI.split(',')[0].split(':')[1].split(';')[0]
 
             // write the bytes of the string to a typed array
-            var ia = new Uint8Array(byteString.length);
+            var ia = new Uint8Array(byteString.length)
             for (var i = 0; i < byteString.length; i++) {
-                ia[i] = byteString.charCodeAt(i);
+                ia[i] = byteString.charCodeAt(i)
             }
 
-            return new Blob([ia], {type:mimeString});
+            return new Blob([ia], {type:mimeString})
         }
     }
 }
