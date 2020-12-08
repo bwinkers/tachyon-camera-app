@@ -126,7 +126,7 @@ async function processRecord(record) {
   console.log('processRecord', JSON.stringify(record))
 
   if (record.eventName !== "ObjectCreated:Put") { console.log('Is not a new file'); return; }
-  if (! key.includes('upload/')) { console.log('Does not look like an upload from user'); return; }
+  if (! key.includes('uploads/')) { console.log('Does not look like an upload from user'); return; }
 
   const originalPhoto = await S3.getObject({ Bucket: bucketName, Key: key }).promise()
   
@@ -158,7 +158,7 @@ async function processRecord(record) {
 }
 
 
-exports.handler = function(event, context) {
+exports.handler = function(event, context, callback) {
   console.log('Received S3 event:', JSON.stringify(event, null, 2));
   // Get the object from the event and show its content type
   client = new AWSAppSyncClient({

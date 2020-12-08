@@ -8,6 +8,9 @@ export const onCreateAlbum = /* GraphQL */ `
       name
       description
       location
+      _version
+      _deleted
+      _lastChangedAt
       createdAt
       updatedAt
       owner
@@ -16,11 +19,15 @@ export const onCreateAlbum = /* GraphQL */ `
           id
           albumId
           bucket
+          _version
+          _deleted
+          _lastChangedAt
           createdAt
           updatedAt
           owner
         }
         nextToken
+        startedAt
       }
     }
   }
@@ -32,6 +39,9 @@ export const onUpdateAlbum = /* GraphQL */ `
       name
       description
       location
+      _version
+      _deleted
+      _lastChangedAt
       createdAt
       updatedAt
       owner
@@ -40,11 +50,15 @@ export const onUpdateAlbum = /* GraphQL */ `
           id
           albumId
           bucket
+          _version
+          _deleted
+          _lastChangedAt
           createdAt
           updatedAt
           owner
         }
         nextToken
+        startedAt
       }
     }
   }
@@ -56,6 +70,9 @@ export const onDeleteAlbum = /* GraphQL */ `
       name
       description
       location
+      _version
+      _deleted
+      _lastChangedAt
       createdAt
       updatedAt
       owner
@@ -64,11 +81,15 @@ export const onDeleteAlbum = /* GraphQL */ `
           id
           albumId
           bucket
+          _version
+          _deleted
+          _lastChangedAt
           createdAt
           updatedAt
           owner
         }
         nextToken
+        startedAt
       }
     }
   }
@@ -89,6 +110,9 @@ export const onCreatePhoto = /* GraphQL */ `
         width
         height
       }
+      _version
+      _deleted
+      _lastChangedAt
       createdAt
       updatedAt
       album {
@@ -96,11 +120,15 @@ export const onCreatePhoto = /* GraphQL */ `
         name
         description
         location
+        _version
+        _deleted
+        _lastChangedAt
         createdAt
         updatedAt
         owner
         photos {
           nextToken
+          startedAt
         }
       }
       owner
@@ -123,6 +151,9 @@ export const onUpdatePhoto = /* GraphQL */ `
         width
         height
       }
+      _version
+      _deleted
+      _lastChangedAt
       createdAt
       updatedAt
       album {
@@ -130,11 +161,15 @@ export const onUpdatePhoto = /* GraphQL */ `
         name
         description
         location
+        _version
+        _deleted
+        _lastChangedAt
         createdAt
         updatedAt
         owner
         photos {
           nextToken
+          startedAt
         }
       }
       owner
@@ -157,6 +192,9 @@ export const onDeletePhoto = /* GraphQL */ `
         width
         height
       }
+      _version
+      _deleted
+      _lastChangedAt
       createdAt
       updatedAt
       album {
@@ -164,11 +202,15 @@ export const onDeletePhoto = /* GraphQL */ `
         name
         description
         location
+        _version
+        _deleted
+        _lastChangedAt
         createdAt
         updatedAt
         owner
         photos {
           nextToken
+          startedAt
         }
       }
       owner

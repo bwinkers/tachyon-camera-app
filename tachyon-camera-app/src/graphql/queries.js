@@ -13,14 +13,19 @@ export const listAlbums = /* GraphQL */ `
         name
         description
         location
+        _version
+        _deleted
+        _lastChangedAt
         createdAt
         updatedAt
         owner
         photos {
           nextToken
+          startedAt
         }
       }
       nextToken
+      startedAt
     }
   }
 `;
@@ -31,6 +36,9 @@ export const getAlbum = /* GraphQL */ `
       name
       description
       location
+      _version
+      _deleted
+      _lastChangedAt
       createdAt
       updatedAt
       owner
@@ -39,12 +47,50 @@ export const getAlbum = /* GraphQL */ `
           id
           albumId
           bucket
+          _version
+          _deleted
+          _lastChangedAt
           createdAt
           updatedAt
           owner
         }
         nextToken
+        startedAt
       }
+    }
+  }
+`;
+export const syncAlbums = /* GraphQL */ `
+  query SyncAlbums(
+    $filter: ModelAlbumFilterInput
+    $limit: Int
+    $nextToken: String
+    $lastSync: AWSTimestamp
+  ) {
+    syncAlbums(
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+      lastSync: $lastSync
+    ) {
+      items {
+        id
+        name
+        description
+        location
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+        owner
+        photos {
+          nextToken
+          startedAt
+        }
+      }
+      nextToken
+      startedAt
     }
   }
 `;
@@ -64,6 +110,9 @@ export const getPhoto = /* GraphQL */ `
         width
         height
       }
+      _version
+      _deleted
+      _lastChangedAt
       createdAt
       updatedAt
       album {
@@ -71,11 +120,15 @@ export const getPhoto = /* GraphQL */ `
         name
         description
         location
+        _version
+        _deleted
+        _lastChangedAt
         createdAt
         updatedAt
         owner
         photos {
           nextToken
+          startedAt
         }
       }
       owner
@@ -103,6 +156,9 @@ export const listPhotos = /* GraphQL */ `
           width
           height
         }
+        _version
+        _deleted
+        _lastChangedAt
         createdAt
         updatedAt
         album {
@@ -110,6 +166,9 @@ export const listPhotos = /* GraphQL */ `
           name
           description
           location
+          _version
+          _deleted
+          _lastChangedAt
           createdAt
           updatedAt
           owner
@@ -117,6 +176,7 @@ export const listPhotos = /* GraphQL */ `
         owner
       }
       nextToken
+      startedAt
     }
   }
 `;
@@ -149,6 +209,9 @@ export const listPhotosByAlbum = /* GraphQL */ `
           width
           height
         }
+        _version
+        _deleted
+        _lastChangedAt
         createdAt
         updatedAt
         album {
@@ -156,6 +219,9 @@ export const listPhotosByAlbum = /* GraphQL */ `
           name
           description
           location
+          _version
+          _deleted
+          _lastChangedAt
           createdAt
           updatedAt
           owner
@@ -163,6 +229,58 @@ export const listPhotosByAlbum = /* GraphQL */ `
         owner
       }
       nextToken
+      startedAt
+    }
+  }
+`;
+export const syncPhotos = /* GraphQL */ `
+  query SyncPhotos(
+    $filter: ModelPhotoFilterInput
+    $limit: Int
+    $nextToken: String
+    $lastSync: AWSTimestamp
+  ) {
+    syncPhotos(
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+      lastSync: $lastSync
+    ) {
+      items {
+        id
+        albumId
+        bucket
+        fullsize {
+          key
+          width
+          height
+        }
+        thumbnail {
+          key
+          width
+          height
+        }
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+        album {
+          id
+          name
+          description
+          location
+          _version
+          _deleted
+          _lastChangedAt
+          createdAt
+          updatedAt
+          owner
+        }
+        owner
+      }
+      nextToken
+      startedAt
     }
   }
 `;
